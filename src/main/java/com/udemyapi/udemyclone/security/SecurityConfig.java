@@ -25,7 +25,8 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailService;
     private static final String[] WHITE_LIST_URL = {
-            "users/register"
+            "users/register",
+            "swagger-ui.html"
     };
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
