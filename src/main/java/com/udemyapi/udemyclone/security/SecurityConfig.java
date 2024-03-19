@@ -25,19 +25,24 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailService;
     private static final String[] WHITE_LIST_URL = {
-            "users/register",
-            "swagger-ui.html"
+            "/users/register",
+            "/swagger-ui/index.html"
     };
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 //.csrf().disable()
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL)
+                       req.requestMatchers(WHITE_LIST_URL)
+                                //req.requestMatchers("/users/register")
+
                                 .permitAll()
                                 .requestMatchers("/users/all").hasAnyRole("AUTHOR","USER")
+                               .requestMatchers("swagger-ui/**").permitAll()
+                               //.requestMatchers("api/v1/**").hasRole("AUTHOR")
                                 .anyRequest()
                                 .authenticated()
+
                 );
         http.sessionManagement(
                 session->
@@ -52,10 +57,10 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Autowired
+
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(customUserDetailService);
+                .userDetailsService(customUserDetailService).passwordEncoder(passwordEncoder());
     }
 
 

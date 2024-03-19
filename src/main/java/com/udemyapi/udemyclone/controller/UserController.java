@@ -2,6 +2,7 @@ package com.udemyapi.udemyclone.controller;
 
 import com.udemyapi.udemyclone.entity.User;
 import com.udemyapi.udemyclone.entity.UserMapper;
+import com.udemyapi.udemyclone.entity.UserRequestDto;
 import com.udemyapi.udemyclone.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<UserMapper> registerUser(@Valid @RequestBody User user){
+    public ResponseEntity<UserMapper> registerUser(@Valid @RequestBody UserRequestDto user){
         return userService.RegisterUser(user);
     }
 

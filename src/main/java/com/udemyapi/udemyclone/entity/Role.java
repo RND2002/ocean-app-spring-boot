@@ -1,13 +1,27 @@
 package com.udemyapi.udemyclone.entity;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
-@RequiredArgsConstructor
-public enum Role {
 
-    ROLE_USER,
-    ROLE_AUTHOR
+@Getter
+@Setter
+@Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+public class Role {
+
+    @Id
+    @GeneratedValue
+    private Integer id;
+    private  String name;
+//    public Role(String role) {
+//        this.role = role;
+//    }
+
+//    private final String role2 "ROLE_AUTHOR";
 
 
 }

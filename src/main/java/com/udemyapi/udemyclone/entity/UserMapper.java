@@ -5,7 +5,7 @@ import java.util.Set;
 public record UserMapper(
          String firstname,
          String lastname,
-         Set<Role> roleSet
+         Set<Role> roles
 
 ) {
 }

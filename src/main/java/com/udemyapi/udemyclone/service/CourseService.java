@@ -22,6 +22,7 @@ public class CourseService {
 
     private final AuthorRepository authorRepository;
     public ResponseEntity<String> createCourse(CourseRequestDto courseDto) {
+        System.out.println("In course service");
        Course course=toCourse(courseDto);
        courseRepository.save(course);
        return new ResponseEntity<>("Course has been created successfully",HttpStatus.OK);

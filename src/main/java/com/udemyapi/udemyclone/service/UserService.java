@@ -1,9 +1,6 @@
 package com.udemyapi.udemyclone.service;
 
-import com.udemyapi.udemyclone.entity.Author;
-import com.udemyapi.udemyclone.entity.Role;
-import com.udemyapi.udemyclone.entity.User;
-import com.udemyapi.udemyclone.entity.UserMapper;
+import com.udemyapi.udemyclone.entity.*;
 import com.udemyapi.udemyclone.repository.AuthorRepository;
 import com.udemyapi.udemyclone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,24 +23,45 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<UserMapper> RegisterUser(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setCreatedAt(LocalDateTime.now());
-         Collection<? extends GrantedAuthority> role= user.getAuthorities();
-         if(role.contains("ROLE_AUTHOR")){
-             Author author=new Author();
-             author.setFirstName(user.getFirstname());
-             author.setLastName(user.getLastname());
-             author.setEmail(user.getEmail());
-             authorRepository.save(author);
-         }
-         userRepository.save(user);
+    private static final Object roleName="ROLE_AUTHOR";
+    public ResponseEntity<UserMapper> RegisterUser(UserRequestDto user){
 
-         return new ResponseEntity<>(userMapperDto(user), HttpStatus.OK);
+        User user1=new User();
+        user1.setFirstname(user.firstName());
+        user1.setLastname(user.lastName());
+        user1.setEmail(user.email());
+        user1.setRoles(user.role());
+        user1.setPassword(passwordEncoder.encode(user.password()));
+        user1.setCreatedAt(LocalDateTime.now());
+        System.out.println("Hello from register user");
+//        if(user1.getRoles().contains(roleName)){
+//            System.out.println("Hello from if user");
+//             Author author=new Author();
+//             author.setFirstName(user1.getFirstname());
+//             author.setLastName(user1.getLastname());
+//             author.setEmail(user1.getEmail());
+//             try{
+//                 userRepository.save(user1);
+//                 authorRepository.save(author);
+//                 return new ResponseEntity<>(userMapperDto(user1),HttpStatus.OK);
+//             }catch (Exception e){
+//                 e.printStackTrace();
+//                 user1.setFirstname("error");
+//                 user1.setEmail("Error email");
+//                 return new ResponseEntity<>(userMapperDto(user1),HttpStatus.INTERNAL_SERVER_ERROR);
+//             }
+//         }
+
+         try{
+             userRepository.save(user1);
+         }catch (Exception e){
+             return new ResponseEntity<>(userMapperDto(user1),HttpStatus.INTERNAL_SERVER_ERROR);
+         }
+        return new ResponseEntity<>(userMapperDto(user1), HttpStatus.OK);
+
     }
 
     public ResponseEntity<List<UserMapper>> getAlUsers() {
-
         List<User> users=userRepository.findAll();
         List<UserMapper> userMapperList=new ArrayList<>();
         for(int i=0;i<users.size();i++){
@@ -55,7 +70,7 @@ public class UserService {
         return new ResponseEntity<>(userMapperList,HttpStatus.OK);
     }
 
-    public UserMapper userMapperDto(User user){
+    private UserMapper userMapperDto(User user){
         return new UserMapper(
                 user.getFirstname(),
                 user.getLastname(),

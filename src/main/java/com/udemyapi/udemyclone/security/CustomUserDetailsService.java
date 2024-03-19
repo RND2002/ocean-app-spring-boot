@@ -3,13 +3,20 @@ package com.udemyapi.udemyclone.security;
 import com.udemyapi.udemyclone.entity.User;
 import com.udemyapi.udemyclone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @RequiredArgsConstructor
-@Component
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -26,8 +33,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 //        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 //        grantedAuthorities.add(new SimpleGrantedAuthority( user.getRole()));
 
+//        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+//        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPassword(), user.getAuthorities());
+
+//        return new org.springframework.security.core.userdetails.User(
+//                user.getEmail(), user.getPassword(), grantedAuthorities);
+        return user;
     }
 }
