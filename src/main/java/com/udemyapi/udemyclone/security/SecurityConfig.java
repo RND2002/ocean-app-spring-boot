@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,7 +26,8 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailService;
     private static final String[] WHITE_LIST_URL = {
-            "/users/register",
+            "api/v1/users/register",
+            "api/v1/auth/basicauth",
             "/swagger-ui/index.html"
     };
     @Bean
@@ -33,11 +35,12 @@ public class SecurityConfig {
         http
                 //.csrf().disable()
                 .authorizeHttpRequests(req ->
-                       req.requestMatchers(WHITE_LIST_URL)
+                               req.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                       .requestMatchers(HttpMethod.OPTIONS,WHITE_LIST_URL)
                                 //req.requestMatchers("/users/register")
 
                                 .permitAll()
-                                .requestMatchers("/users/all").hasAnyRole("AUTHOR","USER")
+                                .requestMatchers("api/v1/users/all").permitAll()
                                .requestMatchers("swagger-ui/**").permitAll()
                                //.requestMatchers("api/v1/**").hasRole("AUTHOR")
                                 .anyRequest()

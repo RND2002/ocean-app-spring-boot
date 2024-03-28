@@ -1,5 +1,7 @@
 package com.udemyapi.udemyclone.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,6 +35,12 @@ public class User extends BaseClass implements UserDetails {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @JsonIgnore
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "users",fetch = FetchType.EAGER)
+    private List<Course> courses;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

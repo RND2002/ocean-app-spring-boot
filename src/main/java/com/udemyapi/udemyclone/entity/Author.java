@@ -30,8 +30,7 @@ public class Author extends BaseClass {
 
     private String age;
 
-    @ManyToMany(mappedBy = "authors",fetch = FetchType.EAGER)
-    private List<Course> courses;
+
 
 
 }

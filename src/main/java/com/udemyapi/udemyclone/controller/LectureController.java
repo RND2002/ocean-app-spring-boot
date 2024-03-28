@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/courses")
+@RequestMapping("api/v1/sections")
 @RequiredArgsConstructor
 public class LectureController {
 
     private final LectureService lectureService;
 
 
-    @PostMapping("/sections/{sectionId}/lectures")
+    @PostMapping("/lectures")
     public ResponseEntity<String> createLecture(
-                                               @PathVariable Integer sectionId, @RequestBody LectureRequestDto lectureRequestDto){
-        return lectureService.createLecture(sectionId,lectureRequestDto);
+                                                @RequestBody LectureRequestDto lectureRequestDto){
+        return lectureService.createLecture(lectureRequestDto);
     }
 
     @GetMapping("/sections/{sectionId}/lectures")

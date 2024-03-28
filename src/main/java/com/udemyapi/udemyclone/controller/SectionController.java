@@ -18,8 +18,8 @@ public class SectionController {
 
     private final SectionService sectionService;
 
-    @PostMapping("/{courseId}sections")
-    public ResponseEntity<String> createSection(@PathVariable Integer courseId, SectionRequestDto sectionRequestDto){
+    @PostMapping("/{courseId}/sections")
+    public ResponseEntity<String> createSection(@PathVariable Integer courseId, @RequestBody SectionRequestDto sectionRequestDto){
         return sectionService.createSection(courseId,sectionRequestDto);
     }
 

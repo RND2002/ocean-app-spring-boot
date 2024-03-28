@@ -2,6 +2,7 @@ package com.udemyapi.udemyclone.service;
 
 import com.udemyapi.udemyclone.entity.*;
 import com.udemyapi.udemyclone.repository.AuthorRepository;
+import com.udemyapi.udemyclone.repository.RoleRepository;
 import com.udemyapi.udemyclone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,10 +24,14 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final RoleRepository roleRepository;
+
     private static final Object roleName="ROLE_AUTHOR";
     public ResponseEntity<UserMapper> RegisterUser(UserRequestDto user){
 
         User user1=new User();
+        Role role=new Role();
+        role.setName(user.role().toString()); //Todo-here is a glitch make it correct in future
         user1.setFirstname(user.firstName());
         user1.setLastname(user.lastName());
         user1.setEmail(user.email());
@@ -74,7 +79,16 @@ public class UserService {
         return new UserMapper(
                 user.getFirstname(),
                 user.getLastname(),
-                user.getRoles()
+                user.getEmail()
         );
+    }
+
+    private Set<String> listRoles(User user){
+        List<Role> roles=new ArrayList<>(user.getRoles());
+        Set<String> roleSet=new HashSet<>();
+        for(int i=0;i<roles.size();i++){
+            roleSet.add(roles.get(i).getName());
+        }
+        return roleSet;
     }
 }

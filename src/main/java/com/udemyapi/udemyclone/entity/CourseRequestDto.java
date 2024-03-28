@@ -6,7 +6,9 @@ public record CourseRequestDto(
         String title,
         String description,
         String tags,
-        List<Integer> authorsId,
+
+        byte [] image,
+        List<Integer> authors,
         List<Integer> sections
 
 ) {

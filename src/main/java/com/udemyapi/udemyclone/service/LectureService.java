@@ -1,10 +1,8 @@
 package com.udemyapi.udemyclone.service;
 
-import com.udemyapi.udemyclone.entity.Lecture;
-import com.udemyapi.udemyclone.entity.LectureRequestDto;
-import com.udemyapi.udemyclone.entity.LectureResponseDto;
-import com.udemyapi.udemyclone.entity.Section;
+import com.udemyapi.udemyclone.entity.*;
 import com.udemyapi.udemyclone.repository.LectureRepository;
+import com.udemyapi.udemyclone.repository.ResourceRepository;
 import com.udemyapi.udemyclone.repository.SectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,27 +19,62 @@ public class LectureService {
 
     private final LectureRepository lectureRepository;
     private final SectionRepository sectionRepository;
+    private final ResourceRepository resourceRepository;
 
     public ResponseEntity<String> createLecture(
-                                                Integer sectionId,
+
                                                 LectureRequestDto lectureRequestDto) {
-        Lecture lecture=toLecture(sectionId,lectureRequestDto);
+        Lecture lecture=toLecture(lectureRequestDto);
         lectureRepository.save(lecture);
         return new ResponseEntity<>("Lecture saved successfully", HttpStatus.CREATED);
 
     }
 
-    private Lecture toLecture(
-                              Integer sectionId,LectureRequestDto lectureRequestDto){
-        Lecture lecture=new Lecture();
-        lecture.setName(lectureRequestDto.name());
-        lecture.setCreatedAt(LocalDateTime.now());
-        lecture.setName(lectureRequestDto.name());
-        Section section=sectionRepository.findById(sectionId).orElseThrow();
-        lecture.setSection(section);
-        //todo take care of resources
-        return lecture;
-    }
+//    private Lecture toLecture(
+//                              LectureRequestDto lectureRequestDto){
+//        Lecture lecture=new Lecture();
+//        lecture.setName(lectureRequestDto.name());
+//        lecture.setCreatedAt(LocalDateTime.now());
+//        lecture.setName(lectureRequestDto.name());
+//        Section section=sectionRepository.findById(lectureRequestDto.sectionId()).orElseThrow();
+//        lecture.setSection(section);
+//        //todo take care of resources
+//        Resource resource=new Resource();
+//        resource.setName(lectureRequestDto.resource().getName());
+//        resource.setLecture(lecture);
+//        resource.setUrl(lectureRequestDto.resource().getUrl());
+//        resource.setSize(lectureRequestDto.resource().getSize());
+//        resourceRepository.save(resource);
+//        lecture.setResource(resource);
+//        return lecture;
+//    }
+private Lecture toLecture(LectureRequestDto lectureRequestDto) {
+    Lecture lecture = new Lecture();
+    lecture.setName(lectureRequestDto.name());
+    lecture.setCreatedAt(LocalDateTime.now());
+
+    Section section = sectionRepository.findById(lectureRequestDto.sectionId()).orElseThrow();
+    lecture.setSection(section);
+
+    // Create and set resource for the lecture
+    Resource resource = new Resource();
+    resource.setName(lectureRequestDto.resource().getName());
+    resource.setUrl(lectureRequestDto.resource().getUrl());
+    resource.setSize(lectureRequestDto.resource().getSize());
+
+    // Save the lecture first to ensure it has an ID before setting it to the resource
+    Lecture savedLecture = lectureRepository.save(lecture);
+
+    // Set the lecture to the resource and save the resource
+    resource.setLecture(savedLecture);
+    resourceRepository.save(resource);
+
+    // Set the resource to the lecture
+    savedLecture.setResource(resource);
+
+    return savedLecture;
+}
+
 
     private LectureResponseDto toLectureResponseDto(Lecture lecture){
         return new LectureResponseDto(

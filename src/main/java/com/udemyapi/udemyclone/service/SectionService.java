@@ -29,13 +29,29 @@ public class SectionService {
         Section section=new Section();
         section.setName(requestDto.name());
         section.setSectionOrder(requestDto.sectionOrder());
+
         section.setCreatedAt(LocalDateTime.now());
         Course course=courseRepository.findById(courseId).orElseThrow();
-        List<Section> sections=course.getSections();
-        sections.add(section);
-        course.setSections(sections);
+        section.setCourse(course);
+        if(course.getSections().size()!=0){
+            List<Section> sections=course.getSections();
+            sections.add(section);
+            course.setSections(sections);
+        }else{
+            ArrayList<Section> sections=new ArrayList<>();
+            sections.add(section);
+            course.setSections(sections);
+
+        }
         courseRepository.save(course);
-        //Todo need to take care of lactures
+        ArrayList<Lecture> lectures=new ArrayList<>();
+//        for(int i=0;i<requestDto.lectureIds().size();i++){
+//            Lecture lecture=new Lecture();
+//            lecture.setSection(section);
+//            lectures.add(lecture);
+//        }
+//        section.setLectures(lectures);
+
         return section;
 
     }

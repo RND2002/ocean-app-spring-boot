@@ -22,6 +22,7 @@ public class Section extends BaseClass{
 
     private int sectionOrder;
 
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
