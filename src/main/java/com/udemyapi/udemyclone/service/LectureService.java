@@ -23,8 +23,8 @@ public class LectureService {
 
     public ResponseEntity<String> createLecture(
 
-                                                LectureRequestDto lectureRequestDto) {
-        Lecture lecture=toLecture(lectureRequestDto);
+                                              Integer sectionId,  LectureRequestDto lectureRequestDto) {
+        Lecture lecture=toLecture(sectionId,lectureRequestDto);
         lectureRepository.save(lecture);
         return new ResponseEntity<>("Lecture saved successfully", HttpStatus.CREATED);
 
@@ -48,12 +48,12 @@ public class LectureService {
 //        lecture.setResource(resource);
 //        return lecture;
 //    }
-private Lecture toLecture(LectureRequestDto lectureRequestDto) {
+private Lecture toLecture(Integer sectionId,LectureRequestDto lectureRequestDto) {
     Lecture lecture = new Lecture();
     lecture.setName(lectureRequestDto.name());
     lecture.setCreatedAt(LocalDateTime.now());
 
-    Section section = sectionRepository.findById(lectureRequestDto.sectionId()).orElseThrow();
+    Section section = sectionRepository.findById(sectionId).orElseThrow();
     lecture.setSection(section);
 
     // Create and set resource for the lecture

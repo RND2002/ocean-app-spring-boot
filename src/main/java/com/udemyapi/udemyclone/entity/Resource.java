@@ -1,5 +1,6 @@
 package com.udemyapi.udemyclone.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Resource {
 
     @OneToOne
     @JoinColumn(name = "lecture_id")
+    @JsonBackReference
     private Lecture lecture;
 
 

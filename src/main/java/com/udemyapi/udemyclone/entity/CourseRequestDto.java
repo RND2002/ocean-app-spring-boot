@@ -8,7 +8,7 @@ public record CourseRequestDto(
         String tags,
 
         byte [] image,
-        List<Integer> authors,
+        List<String> authors,
         List<Integer> sections
 
 ) {

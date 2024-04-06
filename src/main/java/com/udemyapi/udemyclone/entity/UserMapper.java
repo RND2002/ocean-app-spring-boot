@@ -9,8 +9,8 @@ public record UserMapper(
          String firstname,
          String lastname,
 
-        String email
+        String email,
         // Collection<? extends GrantedAuthority> roles
-        //.Set<String> roles
+        Set<Role> roles
 ) {
 }

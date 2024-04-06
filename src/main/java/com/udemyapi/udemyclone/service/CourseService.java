@@ -30,7 +30,7 @@ public class CourseService {
 
     private final RoleRepository roleRepository;
     public ResponseEntity<String> createCourse(CourseRequestDto courseDto, MultipartFile file) throws IOException {
-        List<Integer> authors=courseDto.authors();
+        List<String> authors=courseDto.authors();
         if(authors.size()==0){
             return new ResponseEntity<>("No author is associated",HttpStatus.BAD_REQUEST);
         }
@@ -38,7 +38,8 @@ public class CourseService {
 
        for(int i=0;i<authors.size();i++){
            try{
-               User user=userRepository.findById(authors.get(i)).orElseThrow();
+
+               User user=userRepository.findByEmail(authors.get(i));
                Set<Role> roles=user.getRoles();
                for (Role role : roles) {
                    if (role.getName().equals("ROLE-AUTHOR")) {
@@ -71,7 +72,7 @@ public class CourseService {
       List<User> auhtors=new ArrayList<>();
       int lenAuthors=courseRequestDto.authors().size();
       for(int i=0;i<lenAuthors;i++){
-          User user=userRepository.findById(courseRequestDto.authors().get(i)).orElseThrow();
+          User user=userRepository.findByEmail(courseRequestDto.authors().get(i));
           List<Course> courses=user.getCourses();
           courses.add(course);
           auhtors.add(user);

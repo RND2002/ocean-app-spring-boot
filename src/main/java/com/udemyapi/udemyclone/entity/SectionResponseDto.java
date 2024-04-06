@@ -5,8 +5,8 @@ import java.util.List;
 public record SectionResponseDto(
         Integer sectionId,
         String name,
-        int sectionOrder,
+        int sectionOrder
 
-        List<Lecture> lectures
+        //List<Lecture> lectures
 ) {
 }

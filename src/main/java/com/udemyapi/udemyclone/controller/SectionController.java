@@ -24,7 +24,7 @@ public class SectionController {
     }
 
     @GetMapping("/{courseId}/sections")
-    public ResponseEntity<List<SectionResponseDto>> retrieveSections(Integer courseId){
+    public ResponseEntity<List<SectionResponseDto>> retrieveSections(@PathVariable Integer courseId){
         return sectionService.retrieveSections(courseId);
     }
 
@@ -37,4 +37,9 @@ public class SectionController {
 //    public ResponseEntity<CourseResponseDto> updateSection(@PathVariable Integer courseId,@PathVariable Integer sectionId,SectionRequestDto sectionRequestDto){
 //        return sectionService.updateSection(courseId,sectionId,sectionRequestDto);
 //    }
+
+    @DeleteMapping("/{sectionId}/sections")
+    public ResponseEntity<String> deleteSection(@PathVariable Integer sectionId){
+        return sectionService.deleteSectionById(sectionId);
+    }
 }

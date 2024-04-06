@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("api/v1/users/all").permitAll()
                                .requestMatchers("swagger-ui/**").permitAll()
+                                       .requestMatchers("api/v1/users/register").permitAll()
                                //.requestMatchers("api/v1/**").hasRole("AUTHOR")
                                 .anyRequest()
                                 .authenticated()

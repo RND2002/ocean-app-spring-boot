@@ -1,14 +1,14 @@
 package com.udemyapi.udemyclone.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -22,11 +22,12 @@ public class Section extends BaseClass{
 
     private int sectionOrder;
 
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "section")
-    private List<Lecture> lectures;
+    private List<Lecture> lectures=new ArrayList<>();
 }

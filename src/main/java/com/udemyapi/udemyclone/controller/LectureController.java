@@ -17,13 +17,13 @@ public class LectureController {
     private final LectureService lectureService;
 
 
-    @PostMapping("/lectures")
+    @PostMapping("/{sectionId}/lectures")
     public ResponseEntity<String> createLecture(
-                                                @RequestBody LectureRequestDto lectureRequestDto){
-        return lectureService.createLecture(lectureRequestDto);
+                                               @PathVariable Integer sectionId, @RequestBody LectureRequestDto lectureRequestDto){
+        return lectureService.createLecture(sectionId,lectureRequestDto);
     }
 
-    @GetMapping("/sections/{sectionId}/lectures")
+    @GetMapping("/{sectionId}/lectures")
     public ResponseEntity<List<LectureResponseDto>> retrieveAllLecturesOfASection(@PathVariable Integer sectionId){
         return lectureService.retrieveAllLecturesOfASection(sectionId);
     }

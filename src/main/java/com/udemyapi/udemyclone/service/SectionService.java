@@ -2,6 +2,7 @@ package com.udemyapi.udemyclone.service;
 
 import com.udemyapi.udemyclone.entity.*;
 import com.udemyapi.udemyclone.repository.CourseRepository;
+import com.udemyapi.udemyclone.repository.LectureRepository;
 import com.udemyapi.udemyclone.repository.SectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class SectionService {
     private final SectionRepository sectionRepository;
 
     private final CourseRepository courseRepository;
+    private final LectureRepository lectureRepository;
 
     public ResponseEntity<String> createSection(Integer courseId, SectionRequestDto requestDto){
         sectionRepository.save(sectionDtoToSection(courseId,requestDto));
@@ -60,19 +62,26 @@ public class SectionService {
         return new SectionResponseDto(
                 section.getId(),
                 section.getName(),
-                section.getSectionOrder(),
-                section.getLectures()
+                section.getSectionOrder()
+               // section.getLectures()
         );
     }
 
     public ResponseEntity<List<SectionResponseDto>> retrieveSections(Integer courseId) {
-
+        System.out.println(courseId);
         List<Section> sections=sectionRepository.findAllByCourseId(courseId);
+        //List<Lecture> lectures=new ArrayList<>();
+//        for(int i=0;i<sections.size();i++){
+//            List<Lecture> lectures=lectureRepository(sections.get(i).getLectures())
+//            lectures.add()
+//        }
         List<SectionResponseDto> responseDto=new ArrayList<>();
         for(int i=0;i<sections.size();i++){
             responseDto.add(sectionResponseDto(sections.get(i)));
         }
+        System.out.println(responseDto);
         return new ResponseEntity<>(responseDto,HttpStatus.OK);
+
     }
 
 
@@ -81,6 +90,12 @@ public class SectionService {
 
         Section section=sectionRepository.findAllByCourseIdAndId(courseId,sectionId);
         return new ResponseEntity<>(sectionResponseDto(section),HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> deleteSectionById(Integer sectionId) {
+        Section section=sectionRepository.findById(sectionId).orElseThrow();
+        sectionRepository.delete(section);
+        return new ResponseEntity<>("DeletedSuccessfully",HttpStatus.OK);
     }
 
 //    public ResponseEntity<CourseResponseDto> updateSection(Integer courseId, Integer sectionId) {
