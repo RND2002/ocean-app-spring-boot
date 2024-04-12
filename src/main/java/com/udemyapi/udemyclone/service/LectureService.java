@@ -80,7 +80,8 @@ private Lecture toLecture(Integer sectionId,LectureRequestDto lectureRequestDto)
         return new LectureResponseDto(
                 lecture.getId(),
                 lecture.getName(),
-                lecture.getResource()
+                lecture.getResource(),
+                null
         );
     }
 

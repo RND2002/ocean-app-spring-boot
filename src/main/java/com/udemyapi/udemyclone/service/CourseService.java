@@ -101,7 +101,8 @@ public class CourseService {
                 course.getTitle(),
                 course.getDescription(),
                 course.getImage(),
-                course.getTags()
+                course.getTags(),
+                null
                 );
     }
 

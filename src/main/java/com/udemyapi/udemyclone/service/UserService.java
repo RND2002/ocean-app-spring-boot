@@ -179,7 +179,8 @@ public class UserService {
                 user.getFirstname(),
                 user.getLastname(),
                 user.getEmail(),
-                user.getRoles()
+                user.getRoles(),
+                null
         );
     }
 

@@ -5,6 +5,10 @@ public record LectureResponseDto(
         String name,
 
 
-        Resource resource
+        Resource resource,
+        String errorMessage
 ) {
+    public static LectureResponseDto withErrorMessage(String errorMessage) {
+        return new LectureResponseDto(null, null,null, errorMessage);
+    }
 }

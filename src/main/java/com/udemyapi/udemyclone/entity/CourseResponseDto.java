@@ -6,7 +6,11 @@ public record CourseResponseDto(
         String description,
 
         byte[] image,
-        String tags
+        String tags,
+        String errorMessage
 
 ) {
+    public static CourseResponseDto withErrorMessage(String errorMessage) {
+        return new CourseResponseDto(null, null, null, null,null, errorMessage);
+    }
 }

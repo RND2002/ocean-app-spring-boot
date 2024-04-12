@@ -62,7 +62,8 @@ public class SectionService {
         return new SectionResponseDto(
                 section.getId(),
                 section.getName(),
-                section.getSectionOrder()
+                section.getSectionOrder(),
+               null
                // section.getLectures()
         );
     }

@@ -4,6 +4,7 @@ import com.udemyapi.udemyclone.entity.Lecture;
 import com.udemyapi.udemyclone.entity.Resource;
 import com.udemyapi.udemyclone.repository.LectureRepository;
 import com.udemyapi.udemyclone.repository.ResourceRepository;
+import com.udemyapi.udemyclone.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,13 @@ public class ResourceService {
 
     private ResourceRepository resourceRepository;
     private LectureRepository lectureRepository;
+
+    private VideoRepository videoRepository;
     public ResponseEntity<String> addResourceByLectureId(Integer lectureId,Resource resource){
         Lecture lecture=lectureRepository.findById(lectureId).orElseThrow();
         lecture.setResource(resource);
         resource.setLecture(lecture);
+
         try{
             lectureRepository.save(lecture);
             resourceRepository.save(resource);

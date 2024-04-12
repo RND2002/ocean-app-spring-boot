@@ -27,4 +27,6 @@ public class Resource {
     private Lecture lecture;
 
 
+
+
 }
